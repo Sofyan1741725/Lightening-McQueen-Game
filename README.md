@@ -102,13 +102,3 @@ Please include code comments and, if adding assets, ensure they are correctly li
 - For missing dependencies, re-run `pip install -r requirements.txt`.
 
 ---
-
-## License
-
-Add a license file to the repository (e.g., MIT, Apache-2.0) and update this section. If you want, I can add a LICENSE file for you.
-
----
-
-## Contact
-
-Created by Sofyan1741725. If you have questions or suggestions, open an issue or reach out via GitHub.

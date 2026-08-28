@@ -54,18 +54,18 @@ class Player:
 
 
     def activate_boost(self):
-        if(self.nitro_points > 0):
+        if(self.nitro_points > 0 and not self.boost_active):
             self.nitro_points -= 1
             self.boost_active = True
             self.start_boost = time.perf_counter()
-            while(time.perf_counter() - self.start_boost < 2):
-                pass
-            
-
+        
 
 
     def update(self):
-        pass
+        if self.boost_active:
+            if time.perf_counter() - self.start_boost >= 2:
+                self.boost_active = False
+                self.start_boost = 0
 
     def reset(self):
         self.lane = 1
@@ -73,3 +73,4 @@ class Player:
         self.lives = 3
         self.nitro_points = 0
         self.boost_active = False
+        self.start_boost = 0

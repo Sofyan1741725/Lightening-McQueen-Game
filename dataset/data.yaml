@@ -1,8 +1,9 @@
 train: ../train/images
 val: ../valid/images
-test: ../valid/images
+test: ../test/images
 
 nc: 2
+
 names:
   0: open_palm
   1: peace_sign

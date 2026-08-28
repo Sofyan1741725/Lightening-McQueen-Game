@@ -19,3 +19,6 @@ class Renderer:
         self.mcqueen= cv2.resize(self.mcqueen, (100, 100))
         self.tire= cv2.resize(self.tire, (60, 60))
         self.nitro= cv2.resize(self.nitro, (60, 60))
+
+    def lane_center(self, lane):
+        return (lane * self.lane_width) + (self.lane_width // 2) #lane center calculation

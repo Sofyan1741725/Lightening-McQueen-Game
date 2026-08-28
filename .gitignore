@@ -3,3 +3,5 @@ runs/
 dataset/
 *.pt
 __pycache__/
+*.pt
+runs/

@@ -22,3 +22,7 @@ class Renderer:
 
     def lane_center(self, lane):
         return (lane * self.lane_width) + (self.lane_width // 2) #lane center calculation
+
+    def draw_image(self, frame, image, x, y):  #draw image on the frame at specified coordinates
+        h, w = image.shape[:2]
+        frame[y:y+h, x:x+w] = image 

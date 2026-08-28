@@ -11,4 +11,8 @@ class HUD:
         # Draw nitro
         cv2.putText(frame, f'Nitro: {nitro}%', (20, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
+
+    def boost(self, frame):
+        cv2.putText(frame, 'KACHOW BOOST!', (450, 350), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 255), 3)
+
   

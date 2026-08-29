@@ -4,6 +4,7 @@ from game.obstacle import Obstacle
 from game.nitro import Nitro
 from game.collision import check_collision
 from game.difficulty import Difficulty
+from game.score import Score
 
 import time
 import random

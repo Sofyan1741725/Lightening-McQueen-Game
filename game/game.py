@@ -13,6 +13,7 @@ class Game:
     # initialize game objects and game state
     def __init__(self, lane_width, num_lanes, screen_width, screen_height, y_position , game_duration):
         self.player = Player(lane_width, num_lanes, y_position)
+        self.score = Score()
         self.difficulty = Difficulty()
         self.last_difficulty_update = time.perf_counter()
         self.obstacles = []
@@ -30,6 +31,7 @@ class Game:
     # reset lives, score, objects, boost, etc.
     def reset(self):
         self.player.reset()
+        self.score.reset()
         self.difficulty = Difficulty()
         self.last_difficulty_update = time.perf_counter()
         self.obstacles.clear()
@@ -93,10 +95,12 @@ class Game:
             if check_collision(obstacle, self.player):
                 if not self.player.boost_active:
                     self.player.lives -= 1
+                    self.score.obstacle_hit()
                 self.obstacles.remove(obstacle)
         for nitro in self.nitros[:]:
             if check_collision(nitro, self.player):
                 self.player.nitro_points += 1
+                self.score.add_nitro()
                 self.nitros.remove(nitro)
         
         

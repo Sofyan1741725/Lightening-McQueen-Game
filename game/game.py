@@ -7,6 +7,7 @@ from game.difficulty import Difficulty
 from game.score import Score
 from vision.camera import get_detection
 from vision.gesture import Gesture
+from ui.renderer import Renderer
 
 import cv2 as cv
 from ultralytics import YOLO
@@ -33,6 +34,8 @@ class Game:
         self.nitro_spawn_interval = 2.5
         self.game_duration = game_duration
         self.timer = time.perf_counter()
+        self.renderer = Renderer(screen_width,screen_height,num_lanes)
+
 
     # reset lives, score, objects, boost, etc.
     def reset(self):
@@ -128,7 +131,7 @@ class Game:
             return False
     
     # main game loop
-    def main(self):
+    def run(self):
         model = YOLO("runs/detect/mcqueen/weights/best.pt")
         cap = cv.VideoCapture(0)
         if not cap.isOpened():
@@ -152,5 +155,14 @@ class Game:
 
 
 
-if __name__ == "main":
-    Game.main()
+if __name__ == "__main__":
+    game = Game(
+        lane_width=256,
+        num_lanes=5,
+        screen_width=1280,
+        screen_height=720,
+        y_position=600,
+        game_duration=60
+    )
+
+    game.run()

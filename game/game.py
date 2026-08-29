@@ -53,10 +53,10 @@ class Game:
 
     # decide what to do with OPEN_PALM / PEACE
     def handle_gesture(self, gesture, x_position):
-        if(gesture == "open_palm"):
+        if(gesture == 0): # 0 means open palm
             lane_index = get_lane_from_x(x_position, self.screen_width , self.lanes)
             self.player.move_to_lane(lane_index)
-        elif(gesture == "peace"):
+        elif(gesture == 1): # 1 means peace sign
             self.player.activate_boost()
 
             

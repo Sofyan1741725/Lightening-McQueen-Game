@@ -5,7 +5,7 @@ class Player:
 
     def __init__(self, lane_width, num_lanes, y_position):
         #Lane info
-        self.lane = 1
+        self.lane = num_lanes // 2
         self.num_lanes = num_lanes
         self.lane_width = lane_width
 
@@ -68,7 +68,7 @@ class Player:
                 self.start_boost = 0
 
     def reset(self):
-        self.lane = 1
+        self.lane = self.num_lanes // 2
         self.x = int((self.lane * self.lane_width) + (self.lane_width / 2) - (self.width / 2))
         self.lives = 3
         self.nitro_points = 0

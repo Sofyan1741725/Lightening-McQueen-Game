@@ -4,6 +4,23 @@ from ultralytics import YOLO
 
 MODEL_PATH = "runs/detect/mcqueen/weights/best.pt"
 
+def get_detection(model, cap):
+    ret, frame = cap.read()
+
+    if not ret:
+        return None, None
+
+    results = model.predict(
+        source=frame,
+        device=0,
+        conf=0.7,
+        verbose=False
+    )
+
+    result = results[0]
+
+    return frame, result
+
 
 def main():
     model = YOLO(MODEL_PATH)

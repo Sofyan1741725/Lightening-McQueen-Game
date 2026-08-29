@@ -5,6 +5,12 @@ from game.nitro import Nitro
 from game.collision import check_collision
 from game.difficulty import Difficulty
 from game.score import Score
+from vision.camera import get_detection
+from vision.gesture import Gesture
+from ui.renderer import Renderer
+
+import cv2 as cv
+from ultralytics import YOLO
 
 import time
 import random
@@ -28,6 +34,8 @@ class Game:
         self.nitro_spawn_interval = 2.5
         self.game_duration = game_duration
         self.timer = time.perf_counter()
+        self.renderer = Renderer(screen_width,screen_height,num_lanes)
+
 
     # reset lives, score, objects, boost, etc.
     def reset(self):
@@ -53,10 +61,10 @@ class Game:
 
     # decide what to do with OPEN_PALM / PEACE
     def handle_gesture(self, gesture, x_position):
-        if(gesture == "open_palm"):
+        if(gesture == 0): # 0 means open palm
             lane_index = get_lane_from_x(x_position, self.screen_width , self.lanes)
             self.player.move_to_lane(lane_index)
-        elif(gesture == "peace"):
+        elif(gesture == 1): # 1 means peace sign
             self.player.activate_boost()
 
             
@@ -124,4 +132,37 @@ class Game:
     
     # main game loop
     def run(self):
-        pass
+        model = YOLO("runs/detect/mcqueen/weights/best.pt")
+        cap = cv.VideoCapture(0)
+        if not cap.isOpened():
+            print("Error: Could not open camera.")
+            return
+        gesture_detector = Gesture(model)
+        while not self.is_game_over():
+            frame, result = get_detection(model, cap)
+            if frame is None:
+                break
+            gesture, x_position = gesture_detector.process(result)
+            self.update(gesture,x_position)
+            game_frame = self.renderer.render(self)
+            cv.imshow("McQueen Hand Gesture Game",game_frame)
+            if cv.waitKey(1) & 0xFF == ord("q"):
+                break
+
+        cap.release()
+        cv.destroyAllWindows()
+
+
+
+
+if __name__ == "__main__":
+    game = Game(
+        lane_width=256,
+        num_lanes=5,
+        screen_width=1280,
+        screen_height=720,
+        y_position=600,
+        game_duration=60
+    )
+
+    game.run()

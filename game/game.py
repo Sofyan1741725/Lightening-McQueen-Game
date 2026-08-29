@@ -5,6 +5,11 @@ from game.nitro import Nitro
 from game.collision import check_collision
 from game.difficulty import Difficulty
 from game.score import Score
+from vision.camera import get_detection
+from vision.gesture import Gesture
+
+import cv2 as cv
+from ultralytics import YOLO
 
 import time
 import random
@@ -123,5 +128,29 @@ class Game:
             return False
     
     # main game loop
-    def run(self):
-        pass
+    def main(self):
+        model = YOLO("runs/detect/mcqueen/weights/best.pt")
+        cap = cv.VideoCapture(0)
+        if not cap.isOpened():
+            print("Error: Could not open camera.")
+            return
+        gesture_detector = Gesture(model)
+        while not self.is_game_over():
+            frame, result = get_detection(model, cap)
+            if frame is None:
+                break
+            gesture, x_position = gesture_detector.process(result)
+            self.update(gesture,x_position)
+            game_frame = self.renderer.render(self)
+            cv.imshow("McQueen Hand Gesture Game",game_frame)
+            if cv.waitKey(1) & 0xFF == ord("q"):
+                break
+
+        cap.release()
+        cv.destroyAllWindows()
+
+
+
+
+if __name__ == "main":
+    Game.main()
